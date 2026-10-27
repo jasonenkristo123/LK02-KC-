@@ -62,7 +62,8 @@ function renderTree(sentence, highlightChanges, showPunct) {
   tokens.forEach((t, index) => positions.set(t.id, left + step * index));
 
   const defs = svgElement("defs");
-  for (const [id, color] of [["arrow", "#8291a8"], ["arrow-change", "#be2c42"]]) {
+  // [Task D-1] Tambahkan marker panah hijau untuk case markers
+  for (const [id, color] of [["arrow", "#8291a8"], ["arrow-change", "#be2c42"], ["arrow-case", "#16835f"]]) {
     const marker = svgElement("marker", {
       id, markerWidth: "7", markerHeight: "7", refX: "5.9", refY: "3.5",
       orient: "auto", markerUnits: "strokeWidth",
@@ -77,20 +78,32 @@ function renderTree(sentence, highlightChanges, showPunct) {
     if (t.head === 0 || !positions.has(t.head)) continue;
     const role = SEMANTIC_ROLES[sentence.id]?.[t.id];
     const changed = highlightChanges && CHANGING_ROLES.has(role);
+    // [Task D-1] Deteksi case marker (di, oleh) untuk sorotan hijau khusus
+    const isCase = t.deprel === "case";
     const x1 = positions.get(t.head), x2 = positions.get(t.id);
     const span = Math.abs(tokens.findIndex(v => v.id === t.id) - tokens.findIndex(v => v.id === t.head));
     const arcTop = Math.max(32, baseY - 51 - 35 * span);
+    let edgeClass = "edge";
+    if (changed) edgeClass = "edge changed";
+    else if (isCase) edgeClass = "edge case-edge";
+    const arrowUrl = changed ? "url(#arrow-change)" : isCase ? "url(#arrow-case)" : "url(#arrow)";
     const path = svgElement("path", {
       d: `M${x1} ${baseY - 17} C${x1} ${arcTop}, ${x2} ${arcTop}, ${x2} ${baseY - 17}`,
-      class: changed ? "edge changed" : "edge",
-      "marker-end": changed ? "url(#arrow-change)" : "url(#arrow)",
+      class: edgeClass,
+      "marker-end": arrowUrl,
     });
+    let labelClass = "edge-label";
+    if (changed) labelClass = "edge-label changed";
+    else if (isCase) labelClass = "edge-label case-label";
     const label = svgElement("text", {
       x: (x1 + x2) / 2, y: arcTop + 10, "text-anchor": "middle",
-      class: changed ? "edge-label changed" : "edge-label",
+      class: labelClass,
     }, t.deprel);
     svg.append(path, label);
   }
+
+  // [Task D-2] Baca status toggle UPOS dari checkbox
+  const showUpos = document.getElementById("showUpos")?.checked ?? true;
 
   for (const t of tokens) {
     const x = positions.get(t.id);
@@ -98,9 +111,11 @@ function renderTree(sentence, highlightChanges, showPunct) {
       svg.appendChild(svgElement("text", { x, y: 38, class: "root-text" }, "ROOT ↓"));
     }
     const role = SEMANTIC_ROLES[sentence.id]?.[t.id] || "";
+    // [Task D-1] Tandai node case marker dengan class khusus
+    const isCase = t.deprel === "case";
     const width = Math.max(83, 18 + t.form.length * 13.2);
     const g = svgElement("g", {
-      class: `node ${role ? "role-" + role : ""} ${t.head === 0 ? "is-root" : ""}`,
+      class: `node ${role ? "role-" + role : ""} ${t.head === 0 ? "is-root" : ""} ${isCase ? "is-case" : ""}`,
       tabindex: "0", role: "button",
       "aria-label": `${t.form}, ${t.deprel}. Detail token`,
     });
@@ -108,10 +123,13 @@ function renderTree(sentence, highlightChanges, showPunct) {
       x: x - width / 2, y: baseY - 16, rx: 10, width, height: 43,
     }));
     g.appendChild(svgElement("text", { x, y: baseY + 10, class: "node-token" }, t.form));
-    g.appendChild(svgElement("text", { x, y: baseY + 52, class: "node-pos" }, t.upos));
+    // [Task D-2] Tampilkan UPOS hanya jika toggle aktif
+    if (showUpos) {
+      g.appendChild(svgElement("text", { x, y: baseY + 52, class: "node-pos" }, t.upos));
+    }
     const title = svgElement("title", {}, `${t.form} — ${t.deprel} → HEAD ${t.head}`);
     g.appendChild(title);
-    const show = () => inspectToken(sentence, t, role);
+    const show = () => inspectToken(sentence, t, role, isCase);
     g.addEventListener("click", show);
     g.addEventListener("keydown", event => {
       if (event.key === "Enter" || event.key === " ") {
@@ -123,7 +141,8 @@ function renderTree(sentence, highlightChanges, showPunct) {
   return svg;
 }
 
-function inspectToken(sentence, token, role) {
+// [Task D-1] isCase ditambahkan untuk menampilkan keterangan case marker di inspector
+function inspectToken(sentence, token, role, isCase = false) {
   const headWord = sentence.tokens.find(t => t.id === token.head);
   const details = [
     ["Sentence", sentence.id], ["ID", token.id], ["FORM", token.form],
@@ -145,6 +164,18 @@ function inspectToken(sentence, token, role) {
     dl.append(dt, dd);
   }
   target.append(title, dl);
+  // [Task D-1] Tampilkan catatan khusus jika token adalah case marker
+  if (isCase) {
+    const note = document.createElement("div");
+    note.className = "case-note";
+    const caseExplain = {
+      di: "Preposisi \"di\" adalah kata tersendiri (ADP, DEPREL=case). Berbeda dengan prefiks \"di-\" pada kata \"dibaca\" yang menyatu dalam satu FORM dan tidak menjadi node sintaksis terpisah (§2.1 Lexicalism & §2.5 Case marking).",
+      oleh: "\"Oleh\" adalah case marker yang menandai agent dalam kalimat pasif. Ia menjadi dependent dari \"Siti\" (bukan dari verba), sesuai prinsip content-word head (§2.5).",
+    };
+    note.textContent = caseExplain[token.form.toLowerCase()] ||
+      `\"${token.form}\" adalah case marker: kata function yang terhubung ke content word sebagai dependent (DEPREL=case).`;
+    target.appendChild(note);
+  }
 }
 
 function createTreeCard(sentence, heading, highlightChanges, showPunct) {
@@ -181,6 +212,12 @@ function findRoleToken(sentenceId, role) {
 function renderComparison() {
   const body = document.getElementById("compareBody");
   body.replaceChildren();
+  // [Task D-3] Data apakah semantic role sama walaupun DEPREL berubah
+  const roleStays = {
+    agent: { same: true, note: "Pelaku aksi tetap Siti, tetapi DEPREL berubah: nsubj → obl:agent" },
+    patient: { same: true, note: "Objek aksi tetap buku, tetapi DEPREL berubah: obj → nsubj:pass" },
+    location: { same: true, note: "Lokasi tetap perpustakaan, DEPREL tidak berubah: obl = obl" },
+  };
   for (const role of ["agent", "patient", "location"]) {
     const tr = document.createElement("tr");
     const name = document.createElement("td");
@@ -194,6 +231,17 @@ function renderComparison() {
       td.append(strong, document.createTextNode(token ? ` → ${token.deprel}` : ""));
       tr.appendChild(td);
     }
+    // [Task D-3] Kolom baru: apakah semantic role tetap sama?
+    const tdRole = document.createElement("td");
+    const info = roleStays[role];
+    const badge = document.createElement("span");
+    badge.className = info.same ? "role-badge same" : "role-badge changed";
+    badge.textContent = info.same ? "✓ Tetap" : "✗ Berubah";
+    const noteSpan = document.createElement("div");
+    noteSpan.className = "role-note";
+    noteSpan.textContent = info.note;
+    tdRole.append(badge, noteSpan);
+    tr.appendChild(tdRole);
     body.appendChild(tr);
   }
   document.getElementById("voiceComparison").textContent =
@@ -220,7 +268,8 @@ async function main() {
     if (!sentences.aktif || !sentences.pasif) {
       throw new Error("Butuh sent_id = aktif dan sent_id = pasif di file CoNLL-U.");
     }
-    for (const input of ["mode", "showChanges", "showPunct"]) {
+    // [Task D-2] Tambahkan showUpos ke daftar listener
+    for (const input of ["mode", "showChanges", "showPunct", "showUpos"]) {
       document.getElementById(input).addEventListener("change", render);
     }
     render();

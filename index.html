@@ -26,6 +26,8 @@
       </div>
       <label class="check"><input type="checkbox" id="showChanges" checked /> Sorot relation yang berubah</label>
       <label class="check"><input type="checkbox" id="showPunct" /> Tampilkan punctuation</label>
+      <!-- [Task D-2] Toggle UPOS di bawah setiap node -->
+      <label class="check"><input type="checkbox" id="showUpos" checked /> Tampilkan UPOS di node</label>
       <div class="legend" aria-label="Legenda semantic role manual">
         <span><i class="dot agent"></i>Agent</span>
         <span><i class="dot patient"></i>Patient</span>
@@ -42,7 +44,8 @@
         <h2>Apa yang berubah?</h2>
         <p>Bandingkan <strong>grammatical relation</strong> dari semantic role yang sama.</p>
         <div class="table-wrap"><table>
-          <thead><tr><th>Semantic role (manual)</th><th>Active</th><th>Passive</th></tr></thead>
+          <!-- [Task D-3] Tambah kolom Semantic role tetap? -->
+          <thead><tr><th>Semantic role (manual)</th><th>Active</th><th>Passive</th><th>Semantic role tetap?</th></tr></thead>
           <tbody id="compareBody"></tbody>
         </table></div>
         <p class="insight" id="voiceComparison"></p>

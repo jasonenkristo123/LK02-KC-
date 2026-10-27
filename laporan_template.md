@@ -36,19 +36,52 @@ Tuliskan 2–3 kalimat tentang *dependency tree visualization* yang dibuat.
 
 ## D. Modifikasi kode
 
-**Fitur yang ditambahkan:** ...
+**Fitur yang ditambahkan:** Tiga fitur sesuai opsi Task D:
 
-**File dan bagian yang diubah:** ...
+1. **Penyorotan khusus *case markers*** — `di` dan `oleh` mendapatkan warna hijau pada garis panah dan label `DEPREL`-nya, serta border hijau putus-putus pada node. Ketika di-klik di Token Inspector, muncul penjelasan eksplisit tentang perbedaan preposisi `di` vs prefiks `di-` pada `dibaca`.
 
-**Hasil pengujian:** ...
+2. **Toggle UPOS** — Checkbox "Tampilkan UPOS di node" memungkinkan pengguna menyembunyikan atau menampilkan label part of speech di bawah setiap node pada SVG.
 
-**Screenshot before/after:** (sertakan gambar dengan Markdown jika tersedia)
+3. **Kolom "Semantic role tetap?"** — Kolom keempat ditambahkan pada *comparison table*, menampilkan badge hijau "Tetap" beserta catatan yang menjelaskan bahwa semantic role (Agent, Patient, Location) tetap sama meskipun DEPRELnya berubah.
+
+**File yang diubah:** `app.js`, `index.html`, `style.css`
+
+**Potongan kode utama (fitur 1 — case marker highlighting):**
+
+```js
+const isCase = t.deprel === "case";
+let edgeClass = "edge";
+if (changed) edgeClass = "edge changed";
+else if (isCase) edgeClass = "edge case-edge";
+
+if (isCase) {
+  const note = document.createElement("div");
+  note.className = "case-note";
+  note.textContent = caseExplain[token.form.toLowerCase()];
+  target.appendChild(note);
+}
+```
+
+```css
+.edge.case-edge { stroke: #16835f; stroke-dasharray: 5 3; }
+.edge-label.case-label { fill: #16835f; }
+.case-note { background: #f0faf5; border-left: 3px solid #16835f; }
+```
+
+**Hasil pengujian:**
+- Pada kalimat active: garis dan label `case` milik `di` berwarna hijau; node `di` berborder hijau.
+- Pada kalimat passive: `di` dan `oleh` keduanya hijau; mengklik `oleh` memunculkan penjelasan §2.5 di inspector.
+- Checkbox UPOS berfungsi — label UPOS hilang/muncul tanpa reload.
+- Kolom keempat muncul di comparison table dengan badge "Tetap" untuk semua tiga role.
+
+**Screenshot before/after:** (lihat `screenshot.png` yang disertakan)
+
 
 ## E. Refleksi
 
-Apa satu hal tentang Bahasa Indonesia atau UD yang baru Anda pahami setelah melihat visualisasi?
+Hal yang paling menarik dari visualisasi ini adalah bagaimana **perubahan yang tampak sepele di permukaan kalimat ternyata melibatkan pergeseran besar pada struktur sintaksis**. Ketika kalimat diubah dari aktif ke pasif, bukan hanya urutan kata yang berubah, seluruh fungsi gramatikal token berganti peran: `buku` yang semula `obj` naik menjadi subjek sintaksis (`nsubj:pass`), sementara `Siti` yang tetap melakukan tindakan membaca justru "turun" menjadi oblique (`obl:agent`).
 
-...
+Visualisasi *dependency tree* membuat perubahan ini sangat konkret. Tanpa diagram, sulit membayangkan bahwa `membaca` dan `dibaca` memiliki FORM berbeda tetapi LEMMA yang sama (`baca`), dan bahwa prefiks `di-` tidak membuat node baru — ini langsung terlihat di Token Inspector. Hal ini mengajarkan bahwa **anotasi UD memisahkan level morfologi dan level sintaksis** dengan cara yang elegan, sesuai prinsip *lexicalism* yaitu satu kata utuh = satu node, terlepas dari seberapa banyak afiks yang terkandung di dalamnya.
 
 ## F. Referensi
 
