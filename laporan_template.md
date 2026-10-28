@@ -20,19 +20,20 @@ Dependency Tree Visualization membantu kita untuk memahami lebih dalam terkait p
 
 **C1.** Mengapa `buku` berubah dari `obj` menjadi `nsubj:pass`?
 
-Karena 
+Karena buku awalnya merupakan sebuah kata yang menjadi "korban" dari pelaku, namun karena pergantian menjadi passive maka ia berubah menjadi subjek, permasalahannya seperti penjelasan sebelumnya, sebuah subjek umumnya merupakan pelaku dari suatu aksi, dalam kasus ini buku adalah korban dari suatu aksi, karena itu dia mendapatkan label khusus berupa nsubj:pass
 
 **C2.** Mengapa `Siti` berubah dari `nsubj` menjadi `obl:agent`?
 
-...
+karena posisinya tergeser yang awalnya merupakan sebuah subject nominal menjadi keterangan pelaku, karena dia bukan kata keterangan biasa maka dia diberikan label khusu obl:agent
 
 **C3.** Mengapa `di` di “di perpustakaan” menjadi token `case`, tetapi `di-` pada “dibaca” tidak menjadi node sintaksis tersendiri?
 
-...
+"di" menjadi case karena dia dependen dengan kata benda yang dia ikuti, sementara "di-" tidak dipisah karena dia dianggap berbeda secara fundamental sebagai suatu bagian dari proses terbentuknya kata tersebut
 
 **C4.** Bagaimana temuan Anda terhubung dengan minimal satu bagian paper (§2.1, §2.2, §2.5, §2.7)?
 
-...
+§2.1: C3 merupakan penerapan dari hipotesis leksikali, dimana proses morfologi bahasa dinyatakan berbeda secara fundamental
+§2.2: menjelaskan terkait pergeseran subject menjadi agen, hal ini dibuktikan dengan pembedaan argumen inti dari argumen dependen.
 
 ## D. Modifikasi kode
 
