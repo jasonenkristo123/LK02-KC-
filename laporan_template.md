@@ -1,38 +1,39 @@
 # Laporan Mini Assignment — Universal Dependencies Bahasa Indonesia
 
-**Nama / Kelompok:** ...  
-**Kelas:** ...  
-**Tanggal:** ...
+**Nama / Kelompok:*Kelompok 12* 
+**Kelas:*NLP*
+**Tanggal:*10/28/2026*
 
 ## A. Ringkasan hasil
 
-Tuliskan 2–3 kalimat tentang *dependency tree visualization* yang dibuat.
+Dependency Tree Visualization membantu kita untuk memahami lebih dalam terkait pergantian hubungan antar dependency dengan lebih jelas. Untuk saat ini visualisasi difokuskan pada pemberian label kata kata, siapa yang berperan sebagai nsubj, obj, obl, obl:agent dan nsubj:pass 
 
 ## B. Perbandingan *active–passive voice*
 
 | Semantic role (interpretasi manual) | Active: token + `DEPREL` | Passive: token + `DEPREL` | Apa yang berubah? |
 |---|---|---|---|
-| Agent | ... | ... | ... |
-| Patient | ... | ... | ... |
-| Location | ... | ... | ... |
+| Agent | Siti = nsubj | siti = oblique:agent | perubahannnya ada di hubungan dependency nya dia, yang awalnya dia sebuah nominal subject berubah menjadi obl:agent, perubahan ini dilakukan karena Siti yang awalnya merupakan nsubj tersingkirkan menjadi kalimat keterangan (obl), namun karena ia sejatinya adalah nsubj yang tersingkirkan, maka ia mendapatkan gelar obl:agent |
+| Patient | buku = obj | buku = nsubj:pass | sebaliknya kalau pada kasus buku dia berubah dari object menjadi nominal subject:pass, mengapa berubah? karena dia subjek yang tidak melakukan suatu aksi, dalam lingusitik sebuah subjek umumnya merupakan pelaku yang melakukan suatu aksi, namun karena disini buku merupakan "korban" dari suatu aksi maka haruslah diberikan keterangan "pass" |
+| Location | perpustakaan = obl | perpustakaan = obl  | untuk perpustakaan tidak mengalami perubahan karena posisi dia sama di aktif dan pasif yaitu sebagai sebuah keterangan tempat (obl:loc) |
 
 ## C. Jawaban analisis (200–300 kata total)
 
 **C1.** Mengapa `buku` berubah dari `obj` menjadi `nsubj:pass`?
 
-...
+Karena buku awalnya merupakan sebuah kata yang menjadi "korban" dari pelaku, namun karena pergantian menjadi passive maka ia berubah menjadi subjek, permasalahannya seperti penjelasan sebelumnya, sebuah subjek umumnya merupakan pelaku dari suatu aksi, dalam kasus ini buku adalah korban dari suatu aksi, karena itu dia mendapatkan label khusus berupa nsubj:pass
 
 **C2.** Mengapa `Siti` berubah dari `nsubj` menjadi `obl:agent`?
 
-...
+karena posisinya tergeser yang awalnya merupakan sebuah subject nominal menjadi keterangan pelaku, karena dia bukan kata keterangan biasa maka dia diberikan label khusu obl:agent
 
 **C3.** Mengapa `di` di “di perpustakaan” menjadi token `case`, tetapi `di-` pada “dibaca” tidak menjadi node sintaksis tersendiri?
 
-...
+"di" menjadi case karena dia dependen dengan kata benda yang dia ikuti, sementara "di-" tidak dipisah karena dia dianggap berbeda secara fundamental sebagai suatu bagian dari proses terbentuknya kata tersebut
 
 **C4.** Bagaimana temuan Anda terhubung dengan minimal satu bagian paper (§2.1, §2.2, §2.5, §2.7)?
 
-...
+§2.1: C3 merupakan penerapan dari hipotesis leksikali, dimana proses morfologi bahasa dinyatakan berbeda secara fundamental
+§2.2: menjelaskan terkait pergeseran subject menjadi agen, hal ini dibuktikan dengan pembedaan argumen inti dari argumen dependen.
 
 ## D. Modifikasi kode
 
