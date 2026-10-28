@@ -1,8 +1,8 @@
 # Laporan Mini Assignment — Universal Dependencies Bahasa Indonesia
 
-**Nama / Kelompok:** ...  
-**Kelas:** ...  
-**Tanggal:** ...
+**Nama / Kelompok:*Kelompok 12* 
+**Kelas:*NLP*
+**Tanggal:*10/28/2026*
 
 ## A. Ringkasan hasil
 
