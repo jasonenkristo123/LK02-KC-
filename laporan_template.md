@@ -12,9 +12,9 @@ Tuliskan 2–3 kalimat tentang *dependency tree visualization* yang dibuat.
 
 | Semantic role (interpretasi manual) | Active: token + `DEPREL` | Passive: token + `DEPREL` | Apa yang berubah? |
 |---|---|---|---|
-| Agent | ... | ... | ... |
-| Patient | ... | ... | ... |
-| Location | ... | ... | ... |
+| Agent | Siti = nsubj | siti = obj | perubahannnya ada di hubungan dependency nya dia, yang awalnya dia sebuah nominal subject berubah menjadi object dikarenakan perubahan menjadi passive voice |
+| Patient | buku = obj | buku = nsubj | sebaliknya kalau pada kasus buku dia berubah dari object menjadi nominal subject karena perubahan dari passive voice menjadi active voice |
+| Location | perpustakaan = obj | perpustakaan = obj | untuk perpustakaan tidak mengalami perubahan karena posisi dia sama di aktif dan pasif yaitu sebagai sebuah objek keterangan |
 
 ## C. Jawaban analisis (200–300 kata total)
 
