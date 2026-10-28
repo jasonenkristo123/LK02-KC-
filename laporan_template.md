@@ -6,21 +6,21 @@
 
 ## A. Ringkasan hasil
 
-Tuliskan 2–3 kalimat tentang *dependency tree visualization* yang dibuat.
+Dependency Tree Visualization membantu kita untuk memahami lebih dalam terkait pergantian hubungan antar dependency dengan lebih jelas. Untuk saat ini visualisasi difokuskan pada pemberian label kata kata, siapa yang berperan sebagai nsubj, obj, obl, obl:agent dan nsubj:pass 
 
 ## B. Perbandingan *active–passive voice*
 
 | Semantic role (interpretasi manual) | Active: token + `DEPREL` | Passive: token + `DEPREL` | Apa yang berubah? |
 |---|---|---|---|
-| Agent | Siti = nsubj | siti = obj | perubahannnya ada di hubungan dependency nya dia, yang awalnya dia sebuah nominal subject berubah menjadi object dikarenakan perubahan menjadi passive voice |
-| Patient | buku = obj | buku = nsubj | sebaliknya kalau pada kasus buku dia berubah dari object menjadi nominal subject karena perubahan dari passive voice menjadi active voice |
-| Location | perpustakaan = obj | perpustakaan = obj | untuk perpustakaan tidak mengalami perubahan karena posisi dia sama di aktif dan pasif yaitu sebagai sebuah objek keterangan |
+| Agent | Siti = nsubj | siti = oblique:agent | perubahannnya ada di hubungan dependency nya dia, yang awalnya dia sebuah nominal subject berubah menjadi obl:agent, perubahan ini dilakukan karena Siti yang awalnya merupakan nsubj tersingkirkan menjadi kalimat keterangan (obl), namun karena ia sejatinya adalah nsubj yang tersingkirkan, maka ia mendapatkan gelar obl:agent |
+| Patient | buku = obj | buku = nsubj:pass | sebaliknya kalau pada kasus buku dia berubah dari object menjadi nominal subject:pass, mengapa berubah? karena dia subjek yang tidak melakukan suatu aksi, dalam lingusitik sebuah subjek umumnya merupakan pelaku yang melakukan suatu aksi, namun karena disini buku merupakan "korban" dari suatu aksi maka haruslah diberikan keterangan "pass" |
+| Location | perpustakaan = obl | perpustakaan = obl  | untuk perpustakaan tidak mengalami perubahan karena posisi dia sama di aktif dan pasif yaitu sebagai sebuah keterangan tempat (obl:loc) |
 
 ## C. Jawaban analisis (200–300 kata total)
 
 **C1.** Mengapa `buku` berubah dari `obj` menjadi `nsubj:pass`?
 
-...
+Karena 
 
 **C2.** Mengapa `Siti` berubah dari `nsubj` menjadi `obl:agent`?
 
