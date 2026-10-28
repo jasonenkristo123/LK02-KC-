@@ -3,10 +3,10 @@
 **Nama / Kelompok:Kelompok 12**\
 **Nama Anggota Kelompok:**\
 **I Gusti Ngurah Anantawijaya Mahardika/245150700111027**\
-**Jason Enkristo/255150701111032**\
+**Jason Enkristo/255150701111032**
 
-**Kelas:*NLP**\
-**Tanggal:*10/28/2026**
+*Kelas:*NLP**\
+*Tanggal:*10/28/2026**
 
 ## A. Ringkasan hasil
 
